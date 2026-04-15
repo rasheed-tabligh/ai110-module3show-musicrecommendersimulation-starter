@@ -6,11 +6,13 @@
 
 ---
 
-## 2. Intended Use
+## 2. Goal / Task
 
-This system is built to suggest songs from a small catalog based on what kind of music a person feels like listening to right now. You give it your favorite genre, your current mood, and a sense of how high or low energy you want, and it goes through every song in the list and figures out which ones fit best.
+VibeFinder's goal is to predict which songs from an 18-track catalog will best match a user's declared taste profile. It does this by scoring every song against the user's preferred genre, mood, energy level, emotional positivity (valence), and danceability, then returning the top-ranked results with a plain-language explanation for each one.
 
-It is not meant for real users or a real product. I built it as a learning exercise to understand how apps like Spotify actually think when they recommend music. The assumption it makes is that the user knows what they want — it does not learn over time or adapt based on listening history.
+**Intended use:** Classroom exploration and learning. This is a simulation built to understand how content-based recommenders work. It is appropriate for experimenting with weights, testing edge cases, and discussing how data shapes recommendations.
+
+**Non-intended use:** This system should not be used as a real music recommendation product. It has only 18 songs, no learning from listening history, no user feedback loop, and no diversity enforcement. It would give poor results for anyone whose preferred genre is not in the catalog (K-pop, Afrobeats, Latin, etc.). It also should not be used to make decisions about what music is "good" or "popular" — the catalog reflects one person's choices and has no statistical validity.
 
 ---
 
@@ -94,8 +96,20 @@ Longer term, adding listening history — like tracking skips and replays — wo
 
 ## 9. Personal Reflection
 
-Before this project I never really thought about what was happening behind the scenes when Spotify or YouTube recommended something. It just felt like magic. Building even this simple version made it clear that there is nothing magical about it — it is just math applied to attributes. The "magic" comes from having millions of data points and tuning the weights really carefully over time.
+**Biggest learning moment**
 
-What surprised me most is how much the weights matter. Changing how much a genre match is worth versus an energy match completely changes the character of the recommendations. A small tweak in one number can make the system feel totally different. That made me realize how much human judgment goes into these systems — someone had to decide what mattered more, and that decision shapes what every user experiences.
+The biggest thing I learned is that a recommendation is just a score — and a score is just a set of rules someone wrote down. Before this project I thought of Spotify as something intelligent that "knows" you. After building this, I understand it is a system that measures how close you are to things it has already seen. The intelligence is in the data and the weight choices, not in the algorithm itself. That was a genuinely surprising shift in how I think about it.
 
-It also made me think differently about bias. The system I built would do a poor job for anyone whose taste does not fit the Western, mainstream genres I included. That is not a technical problem — it is a data problem that started with the choices I made about what songs to add. Real recommenders have the same issue, just at a much larger scale.
+**How AI tools helped — and when I had to double-check them**
+
+AI tools were genuinely useful for generating the initial song data, drafting the scoring formula, and structuring the README and model card. They saved a lot of time on boilerplate and helped me think through edge cases I would not have considered on my own, like the K-Pop missing genre scenario or the conflicting classical + angry + high energy profile.
+
+But I had to double-check the math carefully. At one point I was given a formula that would have added scores together in a way where a perfect genre + mood match alone could push a song above its actual maximum — the weights did not add up to what was claimed. I caught it by running the numbers manually against a known song. The AI gave me a reasonable-looking result that was subtly wrong, and I would have missed it if I had not verified it myself. That is the main lesson: AI-generated logic needs to be traced through at least one real example before you trust it.
+
+**What surprised me about simple algorithms feeling like recommendations**
+
+The thing that surprised me most is how quickly a handful of weighted rules starts to feel "right." When I ran the Chill Lofi profile and the top two results were Library Rain and Midnight Coding — two genuinely similar ambient study tracks — it felt like the system understood something. It did not. It just found the two songs with the closest numbers. But the outcome felt intuitive, which made me understand why people trust these systems more than they should. The feeling of a good recommendation does not mean the reasoning behind it is sound.
+
+**What I would try next**
+
+If I extended this project, the first thing I would add is a way to handle unknown genres gracefully — instead of silently dropping the bonus, try to map unfamiliar labels to something close. Second, I would add a diversity penalty so the same genre cannot take more than two spots in the top 5. Third, and most interesting to me, I would experiment with learning from skips — if a user skips a genre match, reduce that genre's weight for them specifically. That is the step from a rule-based system to something that actually adapts, and it is where the real complexity of systems like Spotify begins.
