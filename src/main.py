@@ -1,33 +1,44 @@
 """
 Command line runner for the Music Recommender Simulation.
-
-This file helps you quickly run and test your recommender.
-
-You will implement the functions in recommender.py:
-- load_songs
-- score_song
-- recommend_songs
+Run from the project root with:  python -m src.main
 """
 
-from recommender import load_songs, recommend_songs
+import os
+from src.recommender import load_songs, recommend_songs
+
+CSV_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "songs.csv")
 
 
 def main() -> None:
-    songs = load_songs("data/songs.csv") 
+    songs = load_songs(CSV_PATH)
+    print(f"Loaded {len(songs)} songs from catalog.\n")
 
-    # Starter example profile
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    # Example taste profile — edit these to test different users
+    user_prefs = {
+        "genre":        "pop",
+        "mood":         "happy",
+        "energy":       0.80,
+        "valence":      0.80,
+        "danceability": 0.80,
+    }
+
+    print("User profile:")
+    for key, val in user_prefs.items():
+        print(f"  {key}: {val}")
 
     recommendations = recommend_songs(user_prefs, songs, k=5)
 
-    print("\nTop recommendations:\n")
-    for rec in recommendations:
-        # You decide the structure of each returned item.
-        # A common pattern is: (song, score, explanation)
-        song, score, explanation = rec
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {explanation}")
-        print()
+    print(f"\n{'='*52}")
+    print(f"  Top {len(recommendations)} Recommendations")
+    print(f"{'='*52}")
+
+    for rank, (song, score, explanation) in enumerate(recommendations, start=1):
+        print(f"\n#{rank}  {song['title']}  —  {song['artist']}")
+        print(f"    Genre: {song['genre']}  |  Mood: {song['mood']}  |  Energy: {song['energy']}")
+        print(f"    Score: {score:.2f} / 7.50")
+        print(f"    Why:   {explanation}")
+
+    print(f"\n{'='*52}\n")
 
 
 if __name__ == "__main__":
