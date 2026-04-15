@@ -160,19 +160,19 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Experiments You Tried
 
-- **Lowered genre weight from 2.0 to 0.5** — Songs from totally different genres started appearing in the top results just because their energy was close. The recommendations felt less reliable — like the system forgot what kind of music the user actually wanted.
+- Lowered genre weight from 2.0 to 0.5 — Songs from totally different genres started appearing in the top results just because their energy was close. The recommendations felt less reliable — like the system forgot what kind of music the user actually wanted.
 
-- **Raised mood weight to match genre (both 2.0)** — Made mood feel equally important as genre. For profiles like "chill lofi" it worked well. For others, mood matches pulled in songs from unexpected genres that actually felt okay. Interesting tradeoff.
+- Raised mood weight to match genre (both 2.0) — Made mood feel equally important as genre. For profiles like "chill lofi" it worked well. For others, mood matches pulled in songs from unexpected genres that actually felt okay. Interesting tradeoff.
 
-- **Added valence as a scored feature** — Before adding it, a happy-mood lofi user and a sad-mood lofi user got nearly identical recommendations. Valence helped separate them — lower valence songs like "Empty Roads" stopped appearing in happy profiles.
+- Added valence as a scored feature — Before adding it, a happy-mood lofi user and a sad-mood lofi user got nearly identical recommendations. Valence helped separate them — lower valence songs like "Empty Roads" stopped appearing in happy profiles.
 
-- **Weight experiment: genre halved (1.0), energy doubled (4.0)** — Top-ranked songs stayed mostly the same, but score gaps compressed. Gym Hero dropped from #2 to #3 for the High-Energy Pop profile because its genre bonus was worth less than Rooftop Lights' stronger energy proximity. Confirmed that energy is the most descriptive single feature.
+- Weight experiment: genre halved (1.0), energy doubled (4.0) — Top-ranked songs stayed mostly the same, but score gaps compressed. Gym Hero dropped from #2 to #3 for the High-Energy Pop profile because its genre bonus was worth less than Rooftop Lights' stronger energy proximity. Confirmed that energy is the most descriptive single feature.
 
-- **Adversarial profile — Classical + Angry + High Energy** — Exposed the genre anchor problem. Morning Suite No. 3 ranked #2 despite energy of 0.21 vs. the user's target of 0.90 — the genre match bonus pulled it up even though it sounds nothing like the requested vibe.
+- Adversarial profile — Classical + Angry + High Energy — Exposed the genre anchor problem. Morning Suite No. 3 ranked #2 despite energy of 0.21 vs. the user's target of 0.90 — the genre match bonus pulled it up even though it sounds nothing like the requested vibe.
 
-- **Adversarial profile — K-Pop (genre not in catalog)** — All scores capped around 5.0 instead of 7.0+ because no k-pop song exists. Results were still reasonable (upbeat pop tracks), but the system expressed no confidence. Revealed that missing genre labels quietly degrade recommendation quality.
+- Adversarial profile — K-Pop (genre not in catalog) — All scores capped around 5.0 instead of 7.0+ because no k-pop song exists. Results were still reasonable (upbeat pop tracks), but the system expressed no confidence. Revealed that missing genre labels quietly degrade recommendation quality.
 
-- **Adversarial profile — High Energy + Sad Mood** — The catalog has no "sad banger." The system split between high energy but wrong mood, or correct mood but too quiet. Neither fully satisfied the request. The algorithm behaved correctly; the data just does not cover that emotional space.
+- Adversarial profile — High Energy + Sad Mood — The catalog has no "sad banger." The system split between high energy but wrong mood, or correct mood but too quiet. Neither fully satisfied the request. The algorithm behaved correctly; the data just does not cover that emotional space.
 
 ### Terminal Output
 
@@ -192,12 +192,12 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Limitations and Risks
 
-- **Small catalog** — 18 songs means some genres have only one entry; niche-taste users get weak results
-- **Genre anchor bias** — a fixed +2.0 genre bonus can pull a poorly-matching song into the top results just because the label matches
-- **No lyrics or language understanding** — the system only sees numbers and labels, not what a song actually says or sounds like
-- **No listening history** — it never learns from skips or replays; every session starts cold
-- **Missing genre silence** — genres not in the catalog (K-pop, Afrobeats, Latin) lose the full genre bonus with no fallback
-- **No diversity by default** — without the diversity penalty flag, the top 5 can all be the same genre
+- Small catalog — 18 songs means some genres have only one entry; niche-taste users get weak results
+- Genre anchor bias — a fixed +2.0 genre bonus can pull a poorly-matching song into the top results just because the label matches
+- No lyrics or language understanding — the system only sees numbers and labels, not what a song actually says or sounds like
+- No listening history — it never learns from skips or replays; every session starts cold
+- Missing genre silence — genres not in the catalog (K-pop, Afrobeats, Latin) lose the full genre bonus with no fallback
+- No diversity by default — without the diversity penalty flag, the top 5 can all be the same genre
 
 See `model_card.md` for a deeper analysis of each bias.
 
