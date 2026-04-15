@@ -176,107 +176,30 @@ You can add more tests in `tests/test_recommender.py`.
 
 ### Terminal Output
 
-```
-Loaded 18 songs from catalog.
+**Screenshot 1 — Challenge 2: All four scoring modes on the High-Energy Pop profile**
 
-────────────────────────────────────────────────────────────
-  STANDARD PROFILES
-────────────────────────────────────────────────────────────
+![Terminal 1 – Scoring Modes](screenshots/Terminal%201.png)
 
-============================================================
-  Profile: High-Energy Pop
-  Prefs:   genre=pop  mood=happy  energy=0.85
-============================================================
+**Screenshot 2 — Challenge 1: Extended features across all standard profiles + Diversity Penalty (off)**
 
-  #1  Sunrise City  —  Neon Echo
-       Genre: pop  |  Mood: happy  |  Energy: 0.82
-       Score: 7.35 / 7.50
-       Why:   genre match (+2.0); mood match (+1.0); energy proximity (+1.94); valence proximity (+1.47); danceability proximity (+0.94)
+![Terminal 2 – Extended Features & Diversity Off](screenshots/Terminal%202.png)
 
-  #2  Gym Hero  —  Max Pulse
-       Genre: pop  |  Mood: intense  |  Energy: 0.93
-       Score: 6.23 / 7.50
-       Why:   genre match (+2.0); energy proximity (+1.84); valence proximity (+1.43); danceability proximity (+0.97)
+**Screenshot 3 — Challenge 3: Diversity Penalty (on) + Adversarial edge-case profiles**
 
-  #3  Rooftop Lights  —  Indigo Parade
-       Genre: indie pop  |  Mood: happy  |  Energy: 0.76
-       Score: 5.28 / 7.50
-       Why:   mood match (+1.0); energy proximity (+1.82); valence proximity (+1.49); danceability proximity (+0.97)
-
-  #4  Shoreline Drift  —  Coral Roots
-       Genre: reggae  |  Mood: happy  |  Energy: 0.59
-       Score: 4.86 / 7.50
-       Why:   mood match (+1.0); energy proximity (+1.48); valence proximity (+1.41); danceability proximity (+0.97)
-
-  #5  Block Party Anthem  —  DJ Crate
-       Genre: hip-hop  |  Mood: energetic  |  Energy: 0.88
-       Score: 4.33 / 7.50
-       Why:   energy proximity (+1.94); valence proximity (+1.46); danceability proximity (+0.94)
-
-============================================================
-  Profile: Chill Lofi
-  Prefs:   genre=lofi  mood=chill  energy=0.4
-============================================================
-
-  #1  Library Rain  —  Paper Lanterns
-       Genre: lofi  |  Mood: chill  |  Energy: 0.35
-       Score: 7.40 / 7.50
-       Why:   genre match (+2.0); mood match (+1.0); energy proximity (+1.90); valence proximity (+1.50); danceability proximity (+1.00)
-
-  #2  Midnight Coding  —  LoRoom
-       Genre: lofi  |  Mood: chill  |  Energy: 0.42
-       Score: 7.36 / 7.50
-       Why:   genre match (+2.0); mood match (+1.0); energy proximity (+1.96); valence proximity (+1.44); danceability proximity (+0.96)
-
-  #3  Focus Flow  —  LoRoom
-       Genre: lofi  |  Mood: focused  |  Energy: 0.4
-       Score: 6.46 / 7.50
-       Why:   genre match (+2.0); energy proximity (+2.00); valence proximity (+1.48); danceability proximity (+0.98)
-
-  #4  Spacewalk Thoughts  —  Orbit Bloom
-       Genre: ambient  |  Mood: chill  |  Energy: 0.28
-       Score: 5.01 / 7.50
-       Why:   mood match (+1.0); energy proximity (+1.76); valence proximity (+1.42); danceability proximity (+0.83)
-
-  #5  Porch Light  —  Cedar Falls
-       Genre: country  |  Mood: nostalgic  |  Energy: 0.46
-       Score: 4.28 / 7.50
-       Why:   energy proximity (+1.88); valence proximity (+1.40); danceability proximity (+1.00)
-
-============================================================
-  Profile: Deep Intense Rock
-  Prefs:   genre=rock  mood=intense  energy=0.92
-============================================================
-
-  #1  Storm Runner  —  Voltline
-       Genre: rock  |  Mood: intense  |  Energy: 0.91
-       Score: 7.43 / 7.50
-       Why:   genre match (+2.0); mood match (+1.0); energy proximity (+1.98); valence proximity (+1.46); danceability proximity (+0.99)
-
-  #2  Gym Hero  —  Max Pulse
-       Genre: pop  |  Mood: intense  |  Energy: 0.93
-       Score: 4.77 / 7.50
-       Why:   mood match (+1.0); energy proximity (+1.98); valence proximity (+1.02); danceability proximity (+0.77)
-
-  #3  Night Drive Loop  —  Neon Echo
-       Genre: synthwave  |  Mood: moody  |  Energy: 0.75
-       Score: 4.02 / 7.50
-       Why:   energy proximity (+1.66); valence proximity (+1.44); danceability proximity (+0.92)
-```
+![Terminal 3 – Diversity On & Edge Cases](screenshots/Terminal%203.png)
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+- **Small catalog** — 18 songs means some genres have only one entry; niche-taste users get weak results
+- **Genre anchor bias** — a fixed +2.0 genre bonus can pull a poorly-matching song into the top results just because the label matches
+- **No lyrics or language understanding** — the system only sees numbers and labels, not what a song actually says or sounds like
+- **No listening history** — it never learns from skips or replays; every session starts cold
+- **Missing genre silence** — genres not in the catalog (K-pop, Afrobeats, Latin) lose the full genre bonus with no fallback
+- **No diversity by default** — without the diversity penalty flag, the top 5 can all be the same genre
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+See `model_card.md` for a deeper analysis of each bias.
 
 ---
 
